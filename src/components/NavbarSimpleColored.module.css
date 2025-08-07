@@ -16,6 +16,11 @@
   align-items: center;
 }
 
+.header img {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
 .navbarMain {
   flex: 1;
   display: flex;

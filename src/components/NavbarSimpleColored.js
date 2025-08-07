@@ -5,9 +5,11 @@ import {
   IconCalendarEvent,
   IconUsers,
   IconChartBar,
-  IconHelp
+  IconHelp,
+  IconQuestionMark
 } from '@tabler/icons-react';
 import { Image } from '@mantine/core';
+import { Link } from 'react-router-dom';
 import classes from './NavbarSimpleColored.module.css';
 import hhLogoWhite from '../assets/hh-logo-white.png';
 
@@ -18,25 +20,25 @@ const data = [
   { link: '/volunteers', label: 'Volunteers', icon: IconUsers },
   { link: '/analytics', label: 'Analytics', icon: IconChartBar },
   { link: '/help', label: 'Help & Support', icon: IconHelp },
+  { link: '/faq', label: 'FAQ', icon: IconQuestionMark },
 ];
 
 export function NavbarSimpleColored() {
   const [active, setActive] = useState('Home');
 
   const links = data.map((item) => (
-    <a
+    <Link
       className={classes.link}
       data-active={item.label === active || undefined}
-      href={item.link}
+      to={item.link}
       key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActive(item.label);
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </Link>
   ));
 
   return (

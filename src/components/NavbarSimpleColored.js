@@ -5,12 +5,9 @@ import {
   IconCalendarEvent,
   IconUsers,
   IconChartBar,
-  IconSettings,
-  IconHelp,
-  IconLogout,
-  IconUser
+  IconHelp
 } from '@tabler/icons-react';
-import { Group, Title } from '@mantine/core';
+import { Title } from '@mantine/core';
 import classes from './NavbarSimpleColored.module.css';
 
 const data = [
@@ -19,7 +16,6 @@ const data = [
   { link: '/events', label: 'Events', icon: IconCalendarEvent },
   { link: '/volunteers', label: 'Volunteers', icon: IconUsers },
   { link: '/analytics', label: 'Analytics', icon: IconChartBar },
-  { link: '/settings', label: 'Settings', icon: IconSettings },
   { link: '/help', label: 'Help & Support', icon: IconHelp },
 ];
 
@@ -45,23 +41,10 @@ export function NavbarSimpleColored() {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
+        <div className={classes.header}>
           <Title order={3} style={{ color: 'white' }}>HH Donations</Title>
-          <IconHeart size={28} style={{ color: 'white' }} />
-        </Group>
+        </div>
         {links}
-      </div>
-
-      <div className={classes.footer}>
-        <a href="/profile" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconUser className={classes.linkIcon} stroke={1.5} />
-          <span>User Profile</span>
-        </a>
-
-        <a href="/logout" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
       </div>
     </nav>
   );

@@ -16,9 +16,14 @@
   align-items: center;
 }
 
-.header img {
-  margin-left: 0 !important;
-  margin-right: auto !important;
+.logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0;
+  padding: 0;
+  align-self: flex-start;
 }
 
 .navbarMain {

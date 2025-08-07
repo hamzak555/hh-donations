@@ -8,7 +8,6 @@ import {
   IconHelp,
   IconQuestionMark
 } from '@tabler/icons-react';
-import { Image } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import classes from './NavbarSimpleColored.module.css';
 import hhLogoWhite from '../assets/hh-logo-white.png';
@@ -45,11 +44,10 @@ export function NavbarSimpleColored() {
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <div className={classes.header}>
-          <Image 
+          <img 
             src={hhLogoWhite} 
             alt="HH Donations" 
-            height={50}
-            fit="contain"
+            className={classes.logo}
           />
         </div>
         {links}

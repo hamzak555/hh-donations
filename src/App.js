@@ -2,13 +2,19 @@ import React from 'react';
 import '@mantine/core/styles.css';
 import './styles/App.css';
 import { MantineProvider } from '@mantine/core';
-import DonationsPage from './pages/DonationsPage';
+import { NavbarSimpleColored } from './components/NavbarSimpleColored';
+import Homepage from './pages/Homepage';
 
 function App() {
   return (
     <MantineProvider>
       <div className="App">
-        <DonationsPage />
+        <div style={{ display: 'flex' }}>
+          <NavbarSimpleColored />
+          <main style={{ flex: 1, backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+            <Homepage />
+          </main>
+        </div>
       </div>
     </MantineProvider>
   );

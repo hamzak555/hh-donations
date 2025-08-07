@@ -11,7 +11,7 @@ function App() {
       <div className="App">
         <div style={{ display: 'flex' }}>
           <NavbarSimpleColored />
-          <main style={{ flex: 1, backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+          <main style={{ flex: 1, backgroundColor: 'var(--hh-light)', minHeight: '100vh' }}>
             <Homepage />
           </main>
         </div>

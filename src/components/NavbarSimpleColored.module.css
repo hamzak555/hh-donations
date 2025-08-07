@@ -4,13 +4,13 @@
   padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
-  background-color: var(--mantine-color-blue-6);
+  background-color: var(--hh-primary-dark);
 }
 
 .header {
   padding-bottom: var(--mantine-spacing-md);
   margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
-  border-bottom: 1px solid var(--mantine-color-blue-7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,12 +36,13 @@
 }
 
 .link:hover {
-  background-color: var(--mantine-color-blue-5);
+  background-color: var(--hh-primary);
+  background-color: rgba(69, 139, 122, 0.3);
 }
 
 .link[data-active] {
-  background-color: var(--mantine-color-blue-7);
-  color: var(--mantine-color-white);
+  background-color: var(--hh-primary);
+  color: var(--hh-white);
 }
 
 .linkIcon {
@@ -59,5 +60,5 @@
 .footer {
   padding-top: var(--mantine-spacing-md);
   margin-top: var(--mantine-spacing-md);
-  border-top: 1px solid var(--mantine-color-blue-7);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }

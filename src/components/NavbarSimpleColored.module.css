@@ -22,6 +22,7 @@
   object-fit: contain;
   display: block;
   margin: 0;
+  margin-left: var(--mantine-spacing-sm);
   padding: 0;
   align-self: flex-start;
 }

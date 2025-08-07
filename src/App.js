@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NavbarSimpleColored } from './components/NavbarSimpleColored';
 import Homepage from './pages/Homepage';
 import { FaqPage } from './pages/FaqPage';
+import HelpSupportPage from './pages/HelpSupportPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/faq" element={<FaqPage />} />
+                <Route path="/help" element={<HelpSupportPage />} />
               </Routes>
             </main>
           </div>

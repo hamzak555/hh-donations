@@ -7,8 +7,9 @@ import {
   IconChartBar,
   IconHelp
 } from '@tabler/icons-react';
-import { Title } from '@mantine/core';
+import { Image } from '@mantine/core';
 import classes from './NavbarSimpleColored.module.css';
+import hhLogoWhite from '../assets/hh-logo-white.png';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
@@ -42,7 +43,12 @@ export function NavbarSimpleColored() {
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <div className={classes.header}>
-          <Title order={3} style={{ color: 'white' }}>HH Donations</Title>
+          <Image 
+            src={hhLogoWhite} 
+            alt="HH Donations" 
+            height={50}
+            fit="contain"
+          />
         </div>
         {links}
       </div>

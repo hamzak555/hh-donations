@@ -1,14 +1,16 @@
 import React from 'react';
+import '@mantine/core/styles.css';
 import './styles/App.css';
+import { MantineProvider } from '@mantine/core';
+import DonationsPage from './pages/DonationsPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Welcome to HH Donations</h1>
-        <p>Your React app is ready!</p>
-      </header>
-    </div>
+    <MantineProvider>
+      <div className="App">
+        <DonationsPage />
+      </div>
+    </MantineProvider>
   );
 }
 

@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd hh-donations-app && npm run build",
+  "outputDirectory": "hh-donations-app/build",
+  "installCommand": "cd hh-donations-app && npm install"
+}

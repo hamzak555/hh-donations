@@ -8,7 +8,7 @@ import {
   Anchor,
   Divider,
   Box
-} from '../components/ui/basic';
+} from '@mantine/core';
 import { 
   IconMail, 
   IconPhone, 

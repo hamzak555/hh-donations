@@ -1,4 +1,4 @@
-import { Accordion, Container, Title, Text, Box, Group, Button } from '../components/ui/basic';
+import { Accordion, Container, Title, Text, Box, Group, Button } from '@mantine/core';
 import { IconMail, IconQuestionMark } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';

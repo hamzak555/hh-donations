@@ -42,7 +42,8 @@ import {
   IconDots,
   IconPrinter,
   IconFilter,
-  IconDownload
+  IconDownload,
+  IconCopy
 } from '@tabler/icons-react';
 // Removed import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
 import { API_BASE } from '../utils/apiConfig';
@@ -893,12 +894,36 @@ const AdminDashboard = () => {
                         borderRadius: '8px',
                         fontFamily: 'monospace'
                       }}>
-                        <Text size="xs" style={{ color: '#666', marginBottom: '4px' }}>
-                          📧 admin@hhdonations.com
-                        </Text>
-                        <Text size="xs" style={{ color: '#666' }}>
-                          🔑 admin123
-                        </Text>
+                        <Group spacing="xs" mb="xs">
+                          <Text size="xs" style={{ color: '#666', flex: 1 }}>
+                            📧 admin@hh-donations.com
+                          </Text>
+                          <ActionIcon
+                            size="xs"
+                            variant="subtle"
+                            onClick={() => {
+                              navigator.clipboard.writeText('admin@hh-donations.com');
+                            }}
+                            title="Copy email"
+                          >
+                            <IconCopy size="12px" />
+                          </ActionIcon>
+                        </Group>
+                        <Group spacing="xs">
+                          <Text size="xs" style={{ color: '#666', flex: 1 }}>
+                            🔑 admin123
+                          </Text>
+                          <ActionIcon
+                            size="xs"
+                            variant="subtle"
+                            onClick={() => {
+                              navigator.clipboard.writeText('admin123');
+                            }}
+                            title="Copy password"
+                          >
+                            <IconCopy size="12px" />
+                          </ActionIcon>
+                        </Group>
                       </div>
                     </div>
                     </div>
@@ -967,11 +992,16 @@ const AdminDashboard = () => {
   const completedPickupsCount = pickups.filter((p) => p.status === 'completed').length;
   
   return (
-    <div style={{ backgroundColor: 'var(--hh-light)', minHeight: '100vh' }}>
-      <Container size="lg" py="xl">
-        <Stack spacing="xl">
+    <div style={{ backgroundColor: '#f9fafb', minHeight: '100vh' }}>
+      <Container size="lg" py="2rem">
+        <Stack spacing="2rem">
           {/* Header */}
-          <Title order={1} style={{ color: 'var(--hh-primary-dark)' }}>
+          <Title order={1} style={{ 
+            color: '#141414',
+            fontSize: '2.5rem',
+            fontWeight: 700,
+            marginBottom: '0.5rem'
+          }}>
             Dashboard
           </Title>
 
@@ -982,28 +1012,49 @@ const AdminDashboard = () => {
           )}
 
           {/* Tab Navigation */}
-          <Group spacing="md" mb="xl">
+          <Group spacing="sm" mb="2rem" style={{ 
+            borderBottom: '1px solid #e5e7eb',
+            paddingBottom: '1rem'
+          }}>
             <Button
-              variant={activeTab === 'bins' ? 'filled' : 'outline'}
+              variant={activeTab === 'bins' ? 'filled' : 'subtle'}
               leftIcon={<IconMapPin size="1rem" />}
               onClick={() => setActiveTab('bins')}
-              style={{ backgroundColor: activeTab === 'bins' ? 'var(--hh-primary-dark)' : undefined }}
+              radius="8px"
+              style={{ 
+                backgroundColor: activeTab === 'bins' ? '#2563eb' : 'transparent',
+                color: activeTab === 'bins' ? 'white' : '#6b7280',
+                border: 'none',
+                fontWeight: 500
+              }}
             >
               Bins ({bins.length})
             </Button>
             <Button
-              variant={activeTab === 'drivers' ? 'filled' : 'outline'}
+              variant={activeTab === 'drivers' ? 'filled' : 'subtle'}
               leftIcon={<IconTruck size="1rem" />}
               onClick={() => setActiveTab('drivers')}
-              style={{ backgroundColor: activeTab === 'drivers' ? 'var(--hh-primary-dark)' : undefined }}
+              radius="8px"
+              style={{ 
+                backgroundColor: activeTab === 'drivers' ? '#2563eb' : 'transparent',
+                color: activeTab === 'drivers' ? 'white' : '#6b7280',
+                border: 'none',
+                fontWeight: 500
+              }}
             >
               Drivers ({drivers.length})
             </Button>
             <Button
-              variant={activeTab === 'pickups' ? 'filled' : 'outline'}
+              variant={activeTab === 'pickups' ? 'filled' : 'subtle'}
               leftIcon={<IconCalendar size="1rem" />}
               onClick={() => setActiveTab('pickups')}
-              style={{ backgroundColor: activeTab === 'pickups' ? 'var(--hh-primary-dark)' : undefined }}
+              radius="8px"
+              style={{ 
+                backgroundColor: activeTab === 'pickups' ? '#2563eb' : 'transparent',
+                color: activeTab === 'pickups' ? 'white' : '#6b7280',
+                border: 'none',
+                fontWeight: 500
+              }}
             >
               Upcoming Pickups ({pickups.length})
             </Button>
@@ -1011,23 +1062,38 @@ const AdminDashboard = () => {
 
           {/* Bins Management */}
           {activeTab === 'bins' && (
-            <Card shadow="sm" padding="xl" radius="md">
-              <Group position="apart" mb="md">
-                <Title order={3} style={{ color: 'red', fontSize: '24px' }}>
-                  🔥 ALL DONATION BINS - UPDATED! ({filteredBins.length} of {bins.length})
+            <Card padding="2rem" radius="12px" style={{ border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+              <Stack spacing="1.5rem">
+              <Group position="apart" mb="1.5rem">
+                <Title order={3} style={{ 
+                  color: '#141414',
+                  fontSize: '1.5rem',
+                  fontWeight: 600
+                }}>
+                  All Donation Bins ({filteredBins.length} of {bins.length})
                 </Title>
                 <Group>
                   <Button
                     leftIcon={<IconCalendar size="1rem" />}
                     onClick={handleCreatePickup}
-                    style={{ backgroundColor: '#22c55e' }}
+                    radius="8px"
+                    style={{ 
+                      backgroundColor: '#22c55e',
+                      border: 'none',
+                      fontWeight: 500
+                    }}
                   >
                     Schedule a Pickup
                   </Button>
                   <Button
                     leftIcon={<IconPlus size="1rem" />}
                     onClick={handleCreateBin}
-                    style={{ backgroundColor: 'var(--hh-primary-dark)' }}
+                    radius="8px"
+                    style={{ 
+                      backgroundColor: '#2563eb',
+                      border: 'none',
+                      fontWeight: 500
+                    }}
                   >
                     Add New Bin
                   </Button>
@@ -1037,8 +1103,13 @@ const AdminDashboard = () => {
               {/* Info Alert */}
               <Alert 
                 icon={<IconCalendar size="1rem" />} 
-                color="green"
-                style={{ marginBottom: '1rem' }}
+                color="blue"
+                radius="8px"
+                style={{ 
+                  marginBottom: '1.5rem',
+                  backgroundColor: '#f0f9ff',
+                  border: '1px solid #bae6fd'
+                }}
               >
                 <Text weight={500}>Schedule Pickups for Individual Bins</Text>
                 <Text size="sm" color="dimmed">
@@ -1047,12 +1118,18 @@ const AdminDashboard = () => {
               </Alert>
 
               {/* Search and Filters */}
-              <Group mb="md" grow>
+              <Group mb="1.5rem" grow>
                 <TextInput
                   placeholder="Search by name, address, or bin number..."
                   value={binSearchQuery}
                   onChange={(e) => setBinSearchQuery(e.target.value)}
-                  icon={<IconMapPin size="1rem" />}
+                  radius="8px"
+                  styles={{
+                    input: {
+                      border: '1px solid #d1d5db',
+                      fontSize: '14px'
+                    }
+                  }}
                 />
                 <Select
                   placeholder="Filter by type"
@@ -1077,192 +1154,195 @@ const AdminDashboard = () => {
                 />
               </Group>
 
-              <Table 
-                striped 
-                highlightOnHover 
-                verticalSpacing="md"
-                horizontalSpacing="lg"
-                fontSize="md"
-                styles={{
-                  th: {
-                    backgroundColor: '#f8f9fa',
-                    fontWeight: 600,
-                    fontSize: '14px',
-                    color: '#495057',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    padding: '16px 20px',
-                    borderBottom: '2px solid #dee2e6'
-                  },
-                  td: {
-                    padding: '16px 20px',
-                    fontSize: '14px',
-                    borderBottom: '1px solid #f1f3f4'
-                  },
-                  tbody: {
-                    '& tr:hover': {
-                      backgroundColor: '#f8f9fa !important'
-                    },
-                    '& tr:hover .mantine-Badge-root': {
-                      opacity: '1 !important'
-                    }
-                  }
-                }}
-              >
-                <thead>
-                  <tr>
-                    <th style={{ width: '120px' }}>Bin Number</th>
-                    <th style={{ width: '200px' }}>Location Name</th>
-                    <th>Address</th>
-                    <th style={{ width: '100px' }}>Type</th>
-                    <th style={{ width: '100px' }}>Status</th>
-                    <th style={{ width: '120px' }}>Pickup Status</th>
-                    <th style={{ width: '250px', textAlign: 'center' }}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBins
-                    .slice((binPage - 1) * itemsPerPage, binPage * itemsPerPage)
-                    .map((bin) => (
-                    <tr key={bin.id}>
-                      <td>
-                        <Badge 
-                          color="blue" 
-                          variant="light" 
-                          size="md"
-                          style={{ 
-                            fontFamily: 'monospace',
-                            fontWeight: 600
-                          }}
-                        >
-                          {bin.bin_number || 'N/A'}
-                        </Badge>
-                      </td>
-                      <td>
-                        <Group spacing="sm">
-                          <div style={{
-                            width: '32px',
-                            height: '32px',
-                            backgroundColor: 'var(--hh-primary)',
-                            borderRadius: '6px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}>
-                            <IconMapPin size="16px" color="white" />
-                          </div>
-                          <div>
-                            <Text weight={500} size="sm" style={{ color: '#212529' }}>
-                              {bin.name}
-                            </Text>
-                          </div>
-                        </Group>
-                      </td>
-                      <td>
-                        <Text size="sm" color="dimmed" lineClamp={2}>
-                          {bin.address}
-                        </Text>
-                      </td>
-                      <td>
-                        <Badge 
-                          color={bin.type === 'Indoor' ? 'blue' : 'green'} 
-                          variant="filled"
-                          size="sm"
-                          radius="sm"
-                        >
-                          {bin.type}
-                        </Badge>
-                      </td>
-                      <td>
-                        <Badge 
-                          color={bin.status === 'active' ? 'green' : bin.status === 'maintenance' ? 'yellow' : 'red'} 
-                          variant="dot"
-                          size="sm"
-                        >
-                          {bin.status.charAt(0).toUpperCase() + bin.status.slice(1)}
-                        </Badge>
-                      </td>
-                      <td>
-                        {(() => {
-                          const latestPickup = pickups
-                            .filter(pickup => pickup.bin_id === bin.id)
-                            .sort((a, b) => new Date(b.pickup_date) - new Date(a.pickup_date))[0];
-                          
-                          if (!latestPickup) {
-                            return (
-                              <Badge color="gray" variant="light" size="sm">
-                                No Pickups
-                              </Badge>
-                            );
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[120px]">Bin Number</TableHead>
+                      <TableHead className="w-[200px]">Location Name</TableHead>
+                      <TableHead>Address</TableHead>
+                      <TableHead className="w-[100px]">Type</TableHead>
+                      <TableHead className="w-[100px]">Status</TableHead>
+                      <TableHead className="w-[120px]">Pickup Status</TableHead>
+                      <TableHead className="w-[250px] text-center">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredBins
+                      .slice((binPage - 1) * itemsPerPage, binPage * itemsPerPage)
+                      .map((bin) => (
+                      <TableRow 
+                        key={bin.id}
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          // Prevent opening modal when clicking on buttons
+                          if (e.target.closest('button') || e.target.closest('[role="button"]')) {
+                            return;
                           }
-                          
-                          const statusColors = {
-                            'scheduled': 'blue',
-                            'in_progress': 'yellow', 
-                            'completed': 'green',
-                            'cancelled': 'red'
-                          };
-                          
-                          return (
-                            <Badge 
-                              color={statusColors[latestPickup.status] || 'gray'} 
-                              variant="light" 
-                              size="sm"
-                            >
-                              {latestPickup.status === 'completed' ? 'Completed' :
-                               latestPickup.status === 'scheduled' ? 'Scheduled' :
-                               latestPickup.status === 'in_progress' ? 'In Progress' : 
-                               'Cancelled'}
-                            </Badge>
-                          );
-                        })()
-                      }
-                      </td>
-                      <td>
-                        <Group spacing="xs" position="center">
-                          <Button
-                            size="xs"
-                            variant="filled"
-                            color="green"
-                            onClick={() => handleSchedulePickup(bin)}
-                            leftIcon={<IconCalendar size="14px" />}
-                            styles={{
-                              root: {
-                                backgroundColor: '#22c55e',
-                                '&:hover': {
-                                  backgroundColor: '#16a34a'
-                                }
-                              }
+                          setEditingBin(bin);
+                          setFormData({
+                            name: bin.name,
+                            address: bin.address,
+                            latitude: bin.latitude || '',
+                            longitude: bin.longitude || '',
+                            hours: bin.hours,
+                            type: bin.type,
+                            driveUp: bin.driveUp,
+                            notes: bin.notes || '',
+                            distance: bin.distance || '',
+                            status: bin.status
+                          });
+                          setModalOpened(true);
+                        }}
+                      >
+                        <TableCell>
+                          <Badge 
+                            color="blue" 
+                            variant="light" 
+                            size="md"
+                            style={{ 
+                              fontFamily: 'monospace',
+                              fontWeight: 600
                             }}
                           >
-                            Schedule Pickup
-                          </Button>
-                          <ActionIcon
-                            color="blue"
-                            variant="light"
-                            size="md"
-                            radius="md"
-                            onClick={() => handleEditBin(bin)}
-                            title="Edit Bin"
+                            {bin.bin_number || 'N/A'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Group spacing="sm">
+                            <div style={{
+                              width: '32px',
+                              height: '32px',
+                              backgroundColor: 'var(--hh-primary)',
+                              borderRadius: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}>
+                              <IconMapPin size="16px" color="white" />
+                            </div>
+                            <div>
+                              <Text weight={500} size="sm" style={{ color: '#212529' }}>
+                                {bin.name}
+                              </Text>
+                            </div>
+                          </Group>
+                        </TableCell>
+                        <TableCell>
+                          <Text size="sm" color="dimmed" lineClamp={2}>
+                            {bin.address}
+                          </Text>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            color={bin.type === 'Indoor' ? 'blue' : 'green'} 
+                            variant="filled"
+                            size="sm"
+                            radius="sm"
                           >
-                            <IconEdit size="16px" />
-                          </ActionIcon>
-                          <ActionIcon
-                            color="red"
-                            variant="light"
-                            size="md"
-                            radius="md"
-                            onClick={() => handleDeleteBin(bin.id)}
-                            title="Delete Bin"
+                            {bin.type}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            color={bin.status === 'active' ? 'green' : bin.status === 'maintenance' ? 'yellow' : 'red'} 
+                            variant="dot"
+                            size="sm"
                           >
-                            <IconTrash size="16px" />
-                          </ActionIcon>
-                        </Group>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+                            {bin.status.charAt(0).toUpperCase() + bin.status.slice(1)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {(() => {
+                            const latestPickup = pickups
+                              .filter(pickup => pickup.bin_id === bin.id)
+                              .sort((a, b) => new Date(b.pickup_date) - new Date(a.pickup_date))[0];
+                            
+                            if (!latestPickup) {
+                              return (
+                                <Badge color="gray" variant="light" size="sm">
+                                  No Pickups
+                                </Badge>
+                              );
+                            }
+                            
+                            const statusColors = {
+                              'scheduled': 'blue',
+                              'in_progress': 'yellow', 
+                              'completed': 'green',
+                              'cancelled': 'red'
+                            };
+                            
+                            return (
+                              <Badge 
+                                color={statusColors[latestPickup.status] || 'gray'} 
+                                variant="light" 
+                                size="sm"
+                              >
+                                {latestPickup.status === 'completed' ? 'Completed' :
+                                 latestPickup.status === 'scheduled' ? 'Scheduled' :
+                                 latestPickup.status === 'in_progress' ? 'In Progress' : 
+                                 'Cancelled'}
+                              </Badge>
+                            );
+                          })()
+                        }
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Group spacing="xs" position="center">
+                            <Button
+                              size="xs"
+                              variant="filled"
+                              color="green"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSchedulePickup(bin);
+                              }}
+                              leftIcon={<IconCalendar size="14px" />}
+                              styles={{
+                                root: {
+                                  backgroundColor: '#22c55e',
+                                  '&:hover': {
+                                    backgroundColor: '#16a34a'
+                                  }
+                                }
+                              }}
+                            >
+                              Schedule Pickup
+                            </Button>
+                            <ActionIcon
+                              color="blue"
+                              variant="light"
+                              size="md"
+                              radius="md"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditBin(bin);
+                              }}
+                              title="Edit Bin"
+                            >
+                              <IconEdit size="16px" />
+                            </ActionIcon>
+                            <ActionIcon
+                              color="red"
+                              variant="light"
+                              size="md"
+                              radius="md"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteBin(bin.id);
+                              }}
+                              title="Delete Bin"
+                            >
+                              <IconTrash size="16px" />
+                            </ActionIcon>
+                          </Group>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
               
               {/* Pagination for Bins */}
               {filteredBins.length > itemsPerPage && (
@@ -1286,14 +1366,19 @@ const AdminDashboard = () => {
                   </Text>
                 </Center>
               )}
+              </Stack>
             </Card>
           )}
 
           {/* Drivers Management */}
           {activeTab === 'drivers' && (
-            <Card shadow="sm" padding="xl" radius="md">
-              <Group position="apart" mb="md">
-                <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
+            <Card padding="2rem" radius="12px" style={{ border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+              <Group position="apart" mb="1.5rem">
+                <Title order={3} style={{ 
+                  color: '#141414',
+                  fontSize: '1.5rem',
+                  fontWeight: 600
+                }}>
                   Drivers ({drivers.length})
                 </Title>
                 <Button
@@ -1305,7 +1390,47 @@ const AdminDashboard = () => {
                 </Button>
               </Group>
 
-              <Table striped highlightOnHover>
+              <Table 
+                styles={{
+                  table: {
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    border: '1px solid hsl(214.3 31.8% 91.4%)',
+                    borderRadius: '6px',
+                    overflow: 'hidden'
+                  },
+                  th: {
+                    backgroundColor: 'transparent',
+                    fontWeight: 500,
+                    fontSize: '12px',
+                    color: 'hsl(215.4 16.3% 46.9%)',
+                    padding: '12px',
+                    borderBottom: '1px solid hsl(214.3 31.8% 91.4%)',
+                    textAlign: 'left',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.025em'
+                  },
+                  td: {
+                    padding: '12px',
+                    fontSize: '14px',
+                    color: 'hsl(222.2 84% 4.9%)',
+                    borderBottom: '1px solid hsl(214.3 31.8% 91.4%)',
+                    lineHeight: '1.5'
+                  },
+                  tbody: {
+                    '& tr': {
+                      cursor: 'pointer',
+                      transition: 'background-color 0.1s ease',
+                      '&:hover': {
+                        backgroundColor: 'hsl(210 40% 98%)'
+                      },
+                      '&:last-child td': {
+                        borderBottom: 'none'
+                      }
+                    }
+                  }
+                }}
+              >
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -1320,13 +1445,22 @@ const AdminDashboard = () => {
                   {drivers
                     .slice((driverPage - 1) * itemsPerPage, driverPage * itemsPerPage)
                     .map((driver) => (
-                    <tr key={driver.id}>
-                      <td>
-                        <Group spacing="xs">
-                          <IconUser size="1rem" color="var(--hh-primary)" />
-                          {driver.name}
-                        </Group>
-                      </td>
+                    <tr 
+                      key={driver.id}
+                      onClick={() => {
+                        setEditingDriver(driver);
+                        setDriverFormData({
+                          name: driver.name,
+                          email: driver.email,
+                          phone: driver.phone,
+                          license_number: driver.license_number,
+                          status: driver.status
+                        });
+                        setDriverModalOpened(true);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <td>{driver.name}</td>
                       <td>{driver.email || 'N/A'}</td>
                       <td>{driver.phone || 'N/A'}</td>
                       <td>{driver.license_number || 'N/A'}</td>
@@ -1388,9 +1522,10 @@ const AdminDashboard = () => {
 
           {/* Pickups Management */}
           {activeTab === 'pickups' && (
-            <Card shadow="sm" padding="xl" radius="md">
+            <Card padding="2rem" radius="12px" style={{ border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+              <Stack spacing="1.5rem">
               {/* Sub-tabs for pickups */}
-              <Group mb="md">
+              <Group mb="1.5rem">
                 <Button
                   variant={pickupSubTab === 'scheduled' ? 'filled' : 'outline'}
                   onClick={() => setPickupSubTab('scheduled')}
@@ -1414,7 +1549,7 @@ const AdminDashboard = () => {
               {pickupSubTab === 'scheduled' && (
                 <>
                   <Group position="apart" mb="md">
-                    <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
+                    <Title order={3} style={{ color: 'var(--hh-primary-darkest)' }}>
                       Scheduled Pickups ({scheduledPickupsCount})
                     </Title>
                     <Button
@@ -1431,7 +1566,7 @@ const AdminDashboard = () => {
               {pickupSubTab === 'completed' && (
                 <>
                   <Group position="apart" mb="md">
-                    <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
+                    <Title order={3} style={{ color: 'var(--hh-primary-darkest)' }}>
                       Completed Pickups ({completedPickupsCount})
                     </Title>
                     <Group>
@@ -1477,7 +1612,47 @@ const AdminDashboard = () => {
                 </>
               )}
 
-              <Table striped highlightOnHover>
+              <Table 
+                styles={{
+                  table: {
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    border: '1px solid hsl(214.3 31.8% 91.4%)',
+                    borderRadius: '6px',
+                    overflow: 'hidden'
+                  },
+                  th: {
+                    backgroundColor: 'transparent',
+                    fontWeight: 500,
+                    fontSize: '12px',
+                    color: 'hsl(215.4 16.3% 46.9%)',
+                    padding: '12px',
+                    borderBottom: '1px solid hsl(214.3 31.8% 91.4%)',
+                    textAlign: 'left',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.025em'
+                  },
+                  td: {
+                    padding: '12px',
+                    fontSize: '14px',
+                    color: 'hsl(222.2 84% 4.9%)',
+                    borderBottom: '1px solid hsl(214.3 31.8% 91.4%)',
+                    lineHeight: '1.5'
+                  },
+                  tbody: {
+                    '& tr': {
+                      cursor: 'pointer',
+                      transition: 'background-color 0.1s ease',
+                      '&:hover': {
+                        backgroundColor: 'hsl(210 40% 98%)'
+                      },
+                      '&:last-child td': {
+                        borderBottom: 'none'
+                      }
+                    }
+                  }
+                }}
+              >
                 <thead>
                   <tr>
                     <th>Bin ID</th>
@@ -1501,7 +1676,22 @@ const AdminDashboard = () => {
                     const bin = bins.find(b => b.id === pickup.bin_id);
                     const driver = drivers.find(d => d.id === pickup.driver_id);
                     return (
-                      <tr key={pickup.id}>
+                      <tr 
+                        key={pickup.id}
+                        onClick={() => {
+                          setEditingPickup(pickup);
+                          setPickupFormData({
+                            bin_id: pickup.bin_id?.toString(),
+                            driver_id: pickup.driver_id?.toString(),
+                            pickup_date: pickup.pickup_date,
+                            pickup_time: pickup.pickup_time || '',
+                            load_type: pickup.load_type || '',
+                            status: pickup.status || 'scheduled'
+                          });
+                          setPickupModalOpened(true);
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <td>
                           <Badge 
                             color="blue" 
@@ -1620,6 +1810,7 @@ const AdminDashboard = () => {
                   </Text>
                 </Center>
               )}
+              </Stack>
             </Card>
           )}
         </Stack>

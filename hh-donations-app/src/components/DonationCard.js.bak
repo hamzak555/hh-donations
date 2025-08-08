@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image, Text, Badge, Button, Group, Stack } from '../components/ui/basic';
+import { Card, Image, Text, Badge, Button, Group, Stack } from '@mantine/core';
 
 const DonationCard = ({ title, description, goal, raised, image, category }) => {
   const percentage = (raised / goal) * 100;

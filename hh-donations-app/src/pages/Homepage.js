@@ -457,6 +457,364 @@ const Homepage = () => {
         </Card>
       </Container>
 
+      {/* How It Works Section */}
+      <Box style={{ backgroundColor: '#f9fafb', paddingTop: '6rem', paddingBottom: '6rem' }}>
+        <Container size="xl">
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <Title
+              order={2}
+              style={{
+                fontSize: '2.5rem',
+                fontWeight: 600,
+                color: '#1c1c1c',
+                marginBottom: '1rem'
+              }}
+            >
+              How donation works
+            </Title>
+            <Text
+              style={{
+                fontSize: '1.125rem',
+                color: '#666',
+                maxWidth: '600px',
+                margin: '0 auto'
+              }}
+            >
+              Simple steps to make a lasting impact
+            </Text>
+          </div>
+
+          <SimpleGrid cols={4} spacing="2rem" breakpoints={[{ maxWidth: 768, cols: 2 }, { maxWidth: 480, cols: 1 }]}>
+            {[
+              {
+                step: '01',
+                title: 'Sort your clothes',
+                description: 'Gather gently used clothing items from your wardrobe',
+                icon: IconGift
+              },
+              {
+                step: '02',
+                title: 'Find a bin',
+                description: 'Locate your nearest H&H donation bin using our map',
+                icon: IconMapPin
+              },
+              {
+                step: '03',
+                title: 'Drop off items',
+                description: 'Visit the location and place items in the secure bin',
+                icon: IconTruck
+              },
+              {
+                step: '04',
+                title: 'Track impact',
+                description: 'See how your donations help families worldwide',
+                icon: IconHeart
+              }
+            ].map((step, index) => (
+              <Card
+                key={index}
+                padding="2rem"
+                radius="12px"
+                style={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e1e2e3',
+                  textAlign: 'center',
+                  position: 'relative'
+                }}
+              >
+                <div
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    backgroundColor: 'var(--hh-primary-darkest)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 1.5rem auto'
+                  }}
+                >
+                  <step.icon size="28px" color="white" />
+                </div>
+                
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#cbd5e0',
+                    letterSpacing: '0.1em'
+                  }}
+                >
+                  {step.step}
+                </Text>
+
+                <Title
+                  order={4}
+                  style={{
+                    fontSize: '1.125rem',
+                    fontWeight: 600,
+                    color: '#1c1c1c',
+                    marginBottom: '0.75rem'
+                  }}
+                >
+                  {step.title}
+                </Title>
+                
+                <Text
+                  style={{
+                    color: '#666',
+                    fontSize: '0.9375rem',
+                    lineHeight: 1.5
+                  }}
+                >
+                  {step.description}
+                </Text>
+              </Card>
+            ))}
+          </SimpleGrid>
+        </Container>
+      </Box>
+
+      {/* Testimonials Section */}
+      <Container size="xl" style={{ paddingTop: '6rem', paddingBottom: '6rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <Title
+            order={2}
+            style={{
+              fontSize: '2.5rem',
+              fontWeight: 600,
+              color: '#1c1c1c',
+              marginBottom: '1rem'
+            }}
+          >
+            Stories from our community
+          </Title>
+          <Text
+            style={{
+              fontSize: '1.125rem',
+              color: '#666',
+              maxWidth: '600px',
+              margin: '0 auto'
+            }}
+          >
+            Real people, real impact - hear from donors and recipients
+          </Text>
+        </div>
+
+        <SimpleGrid cols={2} spacing="2rem" breakpoints={[{ maxWidth: 768, cols: 1 }]}>
+          {[
+            {
+              quote: "I love how easy it is to find donation bins in my neighborhood. Knowing that my old clothes are helping families internationally makes me feel great about decluttering.",
+              author: "Sarah M.",
+              role: "Regular Donor, Ottawa",
+              avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b932?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+            },
+            {
+              quote: "H&H Donations provided warm clothing for my family during a difficult time. The quality and care in their work is evident - they truly make a difference.",
+              author: "Maria L.",
+              role: "Recipient, Guatemala",
+              avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+            }
+          ].map((testimonial, index) => (
+            <Card
+              key={index}
+              padding="2.5rem"
+              radius="12px"
+              style={{
+                backgroundColor: 'white',
+                border: '1px solid #e1e2e3',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+              }}
+            >
+              <IconQuote 
+                size="32px" 
+                color="#e1e2e3" 
+                style={{ marginBottom: '1rem' }}
+              />
+              
+              <Text
+                style={{
+                  fontSize: '1.125rem',
+                  color: '#1c1c1c',
+                  lineHeight: 1.6,
+                  marginBottom: '1.5rem',
+                  fontStyle: 'italic'
+                }}
+              >
+                "{testimonial.quote}"
+              </Text>
+              
+              <Group spacing="1rem" align="center">
+                <Avatar
+                  src={testimonial.avatar}
+                  size="md"
+                  radius="xl"
+                />
+                <div>
+                  <Text
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      color: '#1c1c1c'
+                    }}
+                  >
+                    {testimonial.author}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: '0.875rem',
+                      color: '#666'
+                    }}
+                  >
+                    {testimonial.role}
+                  </Text>
+                </div>
+              </Group>
+            </Card>
+          ))}
+        </SimpleGrid>
+      </Container>
+
+      {/* Impact Visualization */}
+      <Box style={{ backgroundColor: 'var(--hh-lightest)', paddingTop: '6rem', paddingBottom: '6rem' }}>
+        <Container size="xl">
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <Title
+              order={2}
+              style={{
+                fontSize: '2.5rem',
+                fontWeight: 600,
+                color: '#1c1c1c',
+                marginBottom: '1rem'
+              }}
+            >
+              Your donations at work
+            </Title>
+            <Text
+              style={{
+                fontSize: '1.125rem',
+                color: '#666',
+                maxWidth: '600px',
+                margin: '0 auto'
+              }}
+            >
+              See the real-time impact of our community's generosity
+            </Text>
+          </div>
+
+          <Card
+            padding="3rem"
+            radius="16px"
+            style={{
+              backgroundColor: 'white',
+              border: '1px solid #e1e2e3',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+            }}
+          >
+            <Grid gutter="3rem" align="center">
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <Stack spacing="2rem">
+                  <div>
+                    <Text style={{ fontSize: '0.875rem', color: '#666', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      This Month's Impact
+                    </Text>
+                    <Text style={{ fontSize: '3rem', fontWeight: 700, color: 'var(--hh-primary-darkest)', marginBottom: '0.5rem' }}>
+                      2,847
+                    </Text>
+                    <Text style={{ fontSize: '1.125rem', color: '#666' }}>
+                      clothing items collected and distributed
+                    </Text>
+                  </div>
+
+                  <div>
+                    <Text style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1rem', fontWeight: 500 }}>
+                      Distribution Progress
+                    </Text>
+                    <Stack spacing="0.75rem">
+                      {[
+                        { region: 'Central America', progress: 78, items: '1,240 items' },
+                        { region: 'Southeast Asia', progress: 65, items: '890 items' },
+                        { region: 'Eastern Europe', progress: 45, items: '717 items' }
+                      ].map((region, index) => (
+                        <div key={index}>
+                          <Group position="apart" style={{ marginBottom: '0.25rem' }}>
+                            <Text style={{ fontSize: '0.875rem', fontWeight: 500, color: '#1c1c1c' }}>
+                              {region.region}
+                            </Text>
+                            <Text style={{ fontSize: '0.75rem', color: '#666' }}>
+                              {region.items}
+                            </Text>
+                          </Group>
+                          <Progress 
+                            value={region.progress} 
+                            style={{ height: '6px' }}
+                            color="var(--hh-primary-dark)"
+                            radius="xl"
+                          />
+                        </div>
+                      ))}
+                    </Stack>
+                  </div>
+                </Stack>
+              </Grid.Col>
+
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <Box
+                  style={{
+                    height: '300px',
+                    backgroundColor: '#f8f9fa',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                >
+                  {/* World map placeholder with animated dots */}
+                  <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Global impact map"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0.3
+                      }}
+                    />
+                    
+                    {/* Animated impact indicators */}
+                    {[
+                      { top: '25%', left: '20%' },
+                      { top: '45%', left: '75%' },
+                      { top: '65%', left: '45%' }
+                    ].map((position, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          position: 'absolute',
+                          ...position,
+                          width: '12px',
+                          height: '12px',
+                          backgroundColor: 'var(--hh-primary)',
+                          borderRadius: '50%',
+                          animation: 'pulse 2s infinite',
+                          animationDelay: `${index * 0.5}s`
+                        }}
+                      />
+                    ))}
+                  </div>
+                </Box>
+              </Grid.Col>
+            </Grid>
+          </Card>
+        </Container>
+      </Box>
+
       {/* CTA Section */}
       <Box style={{ backgroundColor: '#1c1c1c', color: 'white' }}>
         <Container size="xl" style={{ paddingTop: '6rem', paddingBottom: '6rem' }}>

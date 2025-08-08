@@ -1,7 +1,5 @@
 import React from 'react';
-import '@mantine/core/styles.css';
 import './styles/App.css';
-import { MantineProvider } from '@mantine/core';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { NavbarSimpleColored } from './components/NavbarSimpleColored';
 import Footer from './components/Footer';
@@ -38,11 +36,9 @@ function AppContent() {
 
 function App() {
   return (
-    <MantineProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </MantineProvider>
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

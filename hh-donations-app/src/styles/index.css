@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* HH Brand Colors */
   --hh-primary-dark: #094C3B;

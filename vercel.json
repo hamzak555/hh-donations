@@ -2,19 +2,10 @@
   "buildCommand": "cd hh-donations-app && npm run build",
   "outputDirectory": "hh-donations-app/build",
   "installCommand": "cd hh-donations-app && npm install && cd ../hh-donations-backend && npm install",
-  "functions": {
-    "api/index.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/hh-donations-app/build/$1"
+      "source": "/api/(.*)",
+      "destination": "/api"
     }
   ],
   "env": {

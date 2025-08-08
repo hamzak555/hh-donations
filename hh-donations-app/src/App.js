@@ -10,7 +10,7 @@ import WhatToDonate from './pages/WhatToDonate';
 import FindBin from './pages/FindBin';
 import About from './pages/About';
 import { FaqPage } from './pages/FaqPage';
-import ClickableDashboard from './pages/ClickableDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import ComponentDemo from './pages/ComponentDemo';
 
 function AppContent() {
@@ -27,7 +27,7 @@ function AppContent() {
           <Route path="/find-bin" element={<FindBin />} />
           <Route path="/about" element={<About />} />
           <Route path="/faq" element={<FaqPage />} />
-          <Route path="/admin" element={<ClickableDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/components" element={<ComponentDemo />} />
         </Routes>
         {!isAdminPage && <Footer />}

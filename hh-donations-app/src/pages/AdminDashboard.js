@@ -1212,7 +1212,7 @@ const AdminDashboard = () => {
                             </Badge>
                           );
                         })()
-                      )}
+                      }
                       </td>
                       <td>
                         <Group spacing="xs" position="center">
@@ -1421,7 +1421,7 @@ const AdminDashboard = () => {
                       Schedule New Pickup
                     </Button>
                   </Group>
-                </>)
+                </>
               )}
 
               {pickupSubTab === 'completed' && (
@@ -1470,7 +1470,7 @@ const AdminDashboard = () => {
                       </Button>
                     </Group>
                   </Group>
-                </>)
+                </>
               )}
 
               <Table striped highlightOnHover>
@@ -1600,10 +1600,10 @@ const AdminDashboard = () => {
                       page={pickupPage}
                       onChange={setPickupPage}
                       total={Math.ceil(currentPickups.length / itemsPerPage)}
-                    size="md"
-                    radius="md"
-                    withEdges
-                  />
+                      size="md"
+                      radius="md"
+                      withEdges
+                    />
                 </Center>
               )}
               

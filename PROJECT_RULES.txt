@@ -101,4 +101,115 @@ PROJECT DEVELOPMENT RULES
    
    PREVENTION: Always ensure FRONTEND_URL in backend .env matches the actual frontend port (3000).
 
+9. CORS FIX AFTER CODE CHANGES - SPECIFIC ISSUE
+   When "Error connecting to server" appears after making code changes to components:
+   
+   CONTEXT: This occurred after switching from ClickableDashboard to AdminDashboard component
+   and restarting React servers multiple times.
+   
+   SYMPTOMS:
+   - React app compiles successfully
+   - Frontend loads but shows "Error connecting to server" on login
+   - Both servers appear to be running
+   
+   ROOT CAUSE: Backend server process was killed during React restarts but may not have 
+   restarted properly with correct CORS configuration.
+   
+   SPECIFIC SOLUTION (when Section 8 general steps don't work):
+   1. Kill the specific backend process: kill -9 [BACKEND_PID] 
+   2. Manually restart backend with explicit CORS: cd /Users/hamzakhalid/Desktop/HH_Donations/hh-donations-backend && nohup node server.js > server.log 2>&1 & sleep 3
+   3. Verify server startup in logs: tail -10 /Users/hamzakhalid/Desktop/HH_Donations/hh-donations-backend/server.log
+   4. Force browser refresh: osascript -e 'tell application "System Events" to keystroke "r" using command down'
+   
+   KEY INSIGHT: After major code changes and multiple server restarts, the backend may lose
+   proper CORS configuration even if .env file is correct. Manual restart resolves this.
+
+10. VERCEL PRODUCTION DEPLOYMENT - "Error connecting to server" FIX
+    When production site works locally but shows "Error connecting to server" in production:
+    
+    SYMPTOMS:
+    - Local development works perfectly (localhost:3000 -> localhost:5001)
+    - Production site loads but admin login shows "Error connecting to server"
+    - Vercel build logs show various deployment failures
+    
+    ROOT CAUSE: Complex full-stack apps with Express backends don't deploy properly on Vercel
+    using traditional server structures. Vercel requires serverless function architecture.
+    
+    COMPLETE SOLUTION STEPS:
+    
+    STEP 1: Restructure for Vercel Serverless Functions
+    - Delete /api/index.js (complex Express server approach)
+    - Create individual serverless functions in /api directory:
+      * /api/auth/login.js - Login endpoint
+      * /api/bins/admin.js - Bins data endpoint  
+      * /api/health.js - Health check endpoint
+    - Each function must be self-contained with its own CORS headers and DB initialization
+    
+    STEP 2: Simplify Dependencies
+    - Update root package.json to only include essential dependencies:
+      * jsonwebtoken, bcryptjs, sqlite3
+    - Remove Express, CORS, helmet, and other server dependencies
+    - Each serverless function handles its own requirements
+    
+    STEP 3: Fix Vercel Configuration
+    - Update vercel.json:
+      * Remove complex functions/routes configuration
+      * Set CI=false to prevent ESLint warnings from failing build
+      * Keep env variables for production secrets
+    - Remove backend install command - only install frontend dependencies
+    
+    STEP 4: Database Handling
+    - Use /tmp/database.db path for Vercel temporary storage
+    - Initialize database and sample data in each function call
+    - Handle database connections per-function, not globally
+    
+    STEP 5: CORS Configuration
+    - Add CORS headers directly in each serverless function:
+      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    - Handle OPTIONS requests in each function
+    
+    EXAMPLE SERVERLESS FUNCTION STRUCTURE:
+    ```javascript
+    // /api/auth/login.js
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    };
+    
+    module.exports = async (req, res) => {
+      Object.keys(corsHeaders).forEach(key => {
+        res.setHeader(key, corsHeaders[key]);
+      });
+      
+      if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+      }
+      
+      // Function logic here...
+    };
+    ```
+    
+    STEP 6: Deploy and Test
+    - git add . && git commit -m "Restructure for Vercel serverless"  
+    - git push origin main
+    - Wait for Vercel deployment (2-3 minutes)
+    - Test endpoints:
+      * https://yoursite.com/api/health
+      * https://yoursite.com/admin (login functionality)
+    
+    PREVENTION: 
+    - For Vercel deployments, always use serverless function architecture from the start
+    - Avoid complex Express server setups for Vercel platform
+    - Test each API endpoint individually as serverless functions
+    - Keep functions lightweight and self-contained
+    
+    SUCCESS INDICATORS:
+    - /api/health returns JSON with status: "OK"  
+    - Admin login works with proper JWT token generation
+    - No CORS errors in browser console
+    - Vercel build completes without ESLint failures
+
 [This file will be updated with additional rules as the project progresses]

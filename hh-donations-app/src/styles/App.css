@@ -1,0 +1,39 @@
+/* H&H Donations Brand Colors */
+:root {
+  --hh-lightest: #edfdf9;
+  --hh-very-light: #dbf8f1;
+  --hh-light: #b1f2e1;
+  --hh-accent: #85ecd1;
+  --hh-accent-medium: #64e7c3;
+  --hh-accent-dark: #51e4ba;
+  --hh-primary: #46e3b6;
+  --hh-primary-medium: #39c99f;
+  --hh-primary-dark: #2cb38d;
+  --hh-primary-darkest: #094c3b;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+.main-content {
+  background-color: var(--hh-lightest);
+  min-height: 100vh;
+  margin-left: 300px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Mobile Layout */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+    padding-top: 60px;
+  }
+}
+
+/* Ensure content is properly spaced on mobile */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 60px;
+  }
+}

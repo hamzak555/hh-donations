@@ -1,0 +1,63 @@
+PROJECT DEVELOPMENT RULES
+========================
+
+1. BROWSER REFRESH RULE
+   - Always reload the browser tab after making changes to show updates
+   - Ensure the development server is running before reloading
+   - Verify changes are visible in the browser
+
+2. GITHUB BACKUP RULE
+   - Periodically backup the project to GitHub repository
+   - Commit changes with clear, descriptive messages
+   - Push to remote repository regularly
+
+3. FILE MANAGEMENT RULES
+   - NEVER create files unless absolutely necessary
+   - ALWAYS prefer editing existing files over creating new ones
+   - NEVER proactively create documentation files (*.md) or README files unless explicitly requested
+
+4. CODE STYLE RULES
+   - Follow existing code conventions in the project
+   - Match the existing indentation and formatting style
+   - Use existing libraries and utilities - don't assume new ones are available
+
+5. TESTING & VERIFICATION
+   - Test all changes before considering them complete
+   - Run lint and typecheck commands when available
+   - Verify functionality works as expected
+
+6. COMMUNICATION
+   - Keep responses concise and direct
+   - Show results rather than explaining what will be done
+   - Focus on completing the requested task without unnecessary elaboration
+
+7. SERVER TROUBLESHOOTING - ERR_CONNECTION_REFUSED FIX
+   When encountering "localhost refused to connect" or ERR_CONNECTION_REFUSED:
+   
+   STEP 1: Kill all conflicting processes
+   - Run: killall node
+   - Or specifically: pkill -f "react-scripts" and pkill -f "npm start"
+   
+   STEP 2: Check for port conflicts
+   - Check port 3000: lsof -i :3000
+   - Check port 3001: lsof -i :3001
+   - Kill any process using these ports: kill -9 [PID]
+   
+   STEP 3: Start server with explicit port in background
+   - Navigate to app directory: cd /Users/hamzakhalid/Desktop/HH_Donations/hh-donations-app
+   - Start with nohup: PORT=3000 nohup npm start > app.log 2>&1 &
+   
+   STEP 4: Verify server is running
+   - Wait 8 seconds for server to compile
+   - Test connection: curl -I http://localhost:3000
+   - Check process: ps aux | grep 'react-scripts' | grep -v grep
+   
+   STEP 5: Open browser
+   - Run: open http://localhost:3000
+   - If still not working, manually refresh browser or clear cache
+   
+   ROOT CAUSE: The server was trying to use port 3001 instead of 3000, and old processes were hanging without properly binding to ports.
+   
+   PREVENTION: Always use PORT=3000 when starting the server and ensure no zombie processes are running.
+
+[This file will be updated with additional rules as the project progresses]

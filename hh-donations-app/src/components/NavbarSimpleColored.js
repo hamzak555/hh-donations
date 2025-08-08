@@ -1,0 +1,206 @@
+import React, { useState, useEffect } from 'react';
+import {
+  IconHome,
+  IconShirt,
+  IconMapPin,
+  IconInfoCircle,
+  IconMail,
+  IconQuestionMark,
+  IconLogin,
+  IconUser,
+  IconLogout
+} from '@tabler/icons-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Burger, Group } from '@mantine/core';
+import classes from './NavbarSimpleColored.module.css';
+import hhLogoWhite from '../assets/hh-logo-white.png';
+
+const data = [
+  { link: '/', label: 'Home', icon: IconHome },
+  { link: '/what-to-donate', label: 'What to Donate', icon: IconShirt },
+  { link: '/find-bin', label: 'Find a Bin', icon: IconMapPin },
+  { link: '/about', label: 'Our Story', icon: IconInfoCircle },
+  { link: '/faq', label: 'FAQ', icon: IconQuestionMark },
+  { link: '/contact', label: 'Contact', icon: IconMail },
+];
+
+export function NavbarSimpleColored() {
+  const [active, setActive] = useState('Home');
+  const [opened, setOpened] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  // Check if user is logged in
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('admin_token');
+      setIsLoggedIn(!!token);
+    };
+
+    // Check on mount
+    checkAuth();
+
+    // Listen for storage changes (login/logout from other tabs)
+    window.addEventListener('storage', checkAuth);
+    
+    // Check when the component receives focus
+    window.addEventListener('focus', checkAuth);
+
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      window.removeEventListener('focus', checkAuth);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_token');
+    setIsLoggedIn(false);
+    navigate('/');
+    setOpened(false);
+  };
+
+  const links = data.map((item) => (
+    <Link
+      className={classes.link}
+      data-active={item.label === active || undefined}
+      to={item.link}
+      key={item.label}
+      onClick={() => {
+        setActive(item.label);
+        setOpened(false); // Close mobile menu when link is clicked
+      }}
+    >
+      <item.icon className={classes.linkIcon} stroke={1.5} />
+      <span>{item.label}</span>
+    </Link>
+  ));
+
+  return (
+    <>
+      {/* Mobile Header */}
+      <div className={classes.mobileHeader}>
+        <Group justify="space-between" align="center" style={{ width: '100%' }}>
+          <img 
+            src={hhLogoWhite} 
+            alt="HH Donations" 
+            className={classes.mobileLogo}
+          />
+          <Burger
+            opened={opened}
+            onClick={() => setOpened((o) => !o)}
+            color="white"
+            size="md"
+          />
+        </Group>
+      </div>
+
+      {/* Desktop Sidebar */}
+      <nav className={classes.navbar}>
+        <div className={classes.navbarMain}>
+          <div className={classes.header}>
+            <img 
+              src={hhLogoWhite} 
+              alt="HH Donations" 
+              className={classes.logo}
+            />
+          </div>
+          {links}
+        </div>
+
+        <div className={classes.footer}>
+          {isLoggedIn ? (
+            <>
+              <Link
+                className={classes.link}
+                to="/admin"
+                onClick={() => {
+                  setActive('Account');
+                  setOpened(false);
+                }}
+              >
+                <IconUser className={classes.linkIcon} stroke={1.5} />
+                <span>Account</span>
+              </Link>
+              <button
+                className={classes.link}
+                onClick={handleLogout}
+                style={{ 
+                  width: '100%', 
+                  border: 'none', 
+                  background: 'none', 
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  padding: 'var(--mantine-spacing-xs) var(--mantine-spacing-md)'
+                }}
+              >
+                <IconLogout className={classes.linkIcon} stroke={1.5} />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <Link
+              className={classes.link}
+              to="/admin"
+              onClick={() => {
+                setActive('Login');
+                setOpened(false);
+              }}
+            >
+              <IconLogin className={classes.linkIcon} stroke={1.5} />
+              <span>Login</span>
+            </Link>
+          )}
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`${classes.mobileMenu} ${opened ? classes.mobileMenuOpen : ''}`}>
+        <div className={classes.mobileLinks}>
+          {links}
+          {isLoggedIn ? (
+            <>
+              <Link
+                className={classes.link}
+                to="/admin"
+                onClick={() => {
+                  setActive('Account');
+                  setOpened(false);
+                }}
+              >
+                <IconUser className={classes.linkIcon} stroke={1.5} />
+                <span>Account</span>
+              </Link>
+              <button
+                className={classes.link}
+                onClick={handleLogout}
+                style={{ 
+                  width: '100%', 
+                  border: 'none', 
+                  background: 'none', 
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  padding: 'var(--mantine-spacing-xs) var(--mantine-spacing-md)'
+                }}
+              >
+                <IconLogout className={classes.linkIcon} stroke={1.5} />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <Link
+              className={classes.link}
+              to="/admin"
+              onClick={() => {
+                setActive('Login');
+                setOpened(false);
+              }}
+            >
+              <IconLogin className={classes.linkIcon} stroke={1.5} />
+              <span>Login</span>
+            </Link>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

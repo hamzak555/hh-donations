@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #map { height: 400px; width: 100%; border: 1px solid #ccc; margin: 20px 0; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .success { background: #e8f5e8; color: #2e7d32; border: 1px solid #c8e6c8; }
+        .info { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+    </style>
+</head>
+<body>
+    <h1>Google Maps API Direct Test</h1>
+    <p><strong>API Key:</strong> AIzaSyAOX2t7VI8Y0dQAWvgpHq9dzKjD01ZFK6w</p>
+    
+    <div id="status" class="status info">Loading Google Maps API...</div>
+    <div id="map"></div>
+    
+    <div id="console-log" style="background: #f5f5f5; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto;">
+        <strong>Console Log:</strong><br>
+    </div>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const consoleLog = document.getElementById('console-log');
+        const API_KEY = 'AIzaSyAOX2t7VI8Y0dQAWvgpHq9dzKjD01ZFK6w';
+
+        function log(message, type = 'info') {
+            console.log(message);
+            consoleLog.innerHTML += `<br>[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            
+            if (type === 'error') {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ ' + message;
+            } else if (type === 'success') {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ ' + message;
+            } else {
+                statusDiv.className = 'status info';
+                statusDiv.textContent = 'ℹ️ ' + message;
+            }
+        }
+
+        // Test 1: Direct script loading
+        log('Step 1: Loading Google Maps JavaScript API...');
+        
+        // Test 2: Check if already loaded
+        if (window.google && window.google.maps) {
+            log('Google Maps already loaded!', 'success');
+            initMap();
+        } else {
+            log('Loading Google Maps script...');
+        }
+
+        function initMap() {
+            log('Step 2: Initializing map...');
+            try {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 10,
+                    center: { lat: 43.6532, lng: -79.3832 }
+                });
+
+                log('Step 3: Adding marker...');
+                const marker = new google.maps.Marker({
+                    position: { lat: 43.6532, lng: -79.3832 },
+                    map: map,
+                    title: 'Toronto - Test Marker'
+                });
+
+                log('Map loaded successfully!', 'success');
+            } catch (error) {
+                log('Error initializing map: ' + error.message, 'error');
+            }
+        }
+
+        // Error handler for authentication failures
+        window.gm_authFailure = function() {
+            log('Authentication failed! API key may be invalid or restricted.', 'error');
+        };
+
+        // Handle script loading errors
+        window.addEventListener('error', function(e) {
+            if (e.target && e.target.src && e.target.src.includes('maps.googleapis.com')) {
+                log('Failed to load Google Maps script: ' + e.message, 'error');
+            }
+        });
+
+        log('Step 0: Script setup complete, waiting for Google Maps...');
+    </script>
+
+    <!-- Load Google Maps API -->
+    <script async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOX2t7VI8Y0dQAWvgpHq9dzKjD01ZFK6w&callback=initMap">
+    </script>
+</body>
+</html>

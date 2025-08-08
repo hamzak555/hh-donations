@@ -1009,8 +1009,8 @@ const AdminDashboard = () => {
           {activeTab === 'bins' && (
             <Card shadow="sm" padding="xl" radius="md">
               <Group position="apart" mb="md">
-                <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
-                  All Donation Bins ({filteredBins.length} of {bins.length})
+                <Title order={3} style={{ color: 'red', fontSize: '24px' }}>
+                  🔥 ALL DONATION BINS - UPDATED! ({filteredBins.length} of {bins.length})
                 </Title>
                 <Group>
                   <Button

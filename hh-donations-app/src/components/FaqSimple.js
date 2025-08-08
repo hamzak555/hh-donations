@@ -42,29 +42,32 @@ export function FaqSimple() {
   const [openItems, setOpenItems] = useState([]);
 
   return (
-    <Box style={{ backgroundColor: '#fafafa', minHeight: '100vh', fontFamily: '"Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif' }}>
-      <Container size="md" style={{ paddingTop: '2rem', paddingBottom: '6rem' }}>
+    <Box style={{ backgroundColor: '#f4f4f4', minHeight: '100vh', fontFamily: '"Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <Container size={1200} style={{ paddingTop: '4rem', paddingBottom: '4rem', maxWidth: '1200px' }}>
         {/* Header Section */}
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <Title
             style={{
-              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontSize: 'clamp(40px, 5vw, 64px)',
               fontWeight: 600,
               lineHeight: 1.1,
-              color: '#1c1c1c',
+              color: '#242424',
               marginBottom: '1rem',
-              letterSpacing: '-0.025em'
+              letterSpacing: '-0.025em',
+              fontFamily: '"Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif'
             }}
           >
             Frequently asked questions
           </Title>
           <Text
             style={{
-              fontSize: '1.125rem',
-              color: '#666',
+              fontSize: '18px',
+              color: '#898989',
               maxWidth: '600px',
               margin: '0 auto',
-              lineHeight: 1.6
+              lineHeight: 1.5,
+              fontFamily: '"Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif',
+              fontWeight: 400
             }}
           >
             Everything you need to know about donating clothing and our mission to help families worldwide.
@@ -78,65 +81,57 @@ export function FaqSimple() {
           onChange={setOpenItems}
           styles={{
             root: {
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
+              maxWidth: '810px',
+              margin: '0 auto'
             },
             item: {
-              backgroundColor: 'white',
-              border: '1px solid #e1e2e3',
+              backgroundColor: '#ffffff',
+              border: 'none',
               borderRadius: '12px',
-              marginBottom: '1rem',
+              marginBottom: '12px',
               overflow: 'hidden',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
               '&:last-child': {
                 marginBottom: 0
               }
             },
             control: {
-              backgroundColor: 'white',
+              backgroundColor: '#ffffff',
               border: 'none',
-              fontSize: '1.125rem',
+              fontSize: '18px',
               fontWeight: 600,
-              color: '#1c1c1c',
-              padding: '1.5rem',
+              color: '#242424',
+              padding: '24px',
+              fontFamily: '"Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif',
               '&:hover': {
-                backgroundColor: '#fafafa'
+                backgroundColor: '#ffffff'
               }
             },
             panel: {
-              backgroundColor: 'white',
-              padding: '0 1.5rem 1.5rem 1.5rem'
+              backgroundColor: '#ffffff',
+              padding: '0 24px 24px 24px'
             },
             content: {
-              fontSize: '1rem',
-              color: '#4a5568',
-              lineHeight: 1.6
+              fontSize: '18px',
+              color: '#898989',
+              lineHeight: 1.5,
+              fontFamily: '"Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif',
+              fontWeight: 400
             },
             chevron: {
               border: 'none',
-              backgroundColor: '#f4f4f4',
+              backgroundColor: 'transparent',
               borderRadius: '50%',
-              width: '32px',
-              height: '32px',
-              color: '#666',
+              width: '24px',
+              height: '24px',
+              color: '#898989',
               '&[data-rotate]': {
-                transform: 'rotate(180deg)',
+                transform: 'rotate(45deg)',
               }
             }
           }}
-          chevron={
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              backgroundColor: '#f4f4f4',
-              borderRadius: '50%',
-              color: '#666'
-            }}>
-              <IconPlus size={16} />
-            </div>
-          }
+          chevron={<IconPlus size={16} />}
         >
           {faqs.map((faq, index) => (
             <Accordion.Item key={index} value={`faq-${index}`}>
@@ -151,12 +146,13 @@ export function FaqSimple() {
         {/* Contact CTA */}
         <Box style={{ 
           textAlign: 'center', 
-          marginTop: '4rem',
-          padding: '3rem 2rem',
-          backgroundColor: 'white',
-          borderRadius: '16px',
-          border: '1px solid #e1e2e3',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+          marginTop: '48px',
+          padding: '48px 32px',
+          backgroundColor: '#ffffff',
+          borderRadius: '12px',
+          maxWidth: '810px',
+          margin: '48px auto 0 auto',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
         }}>
           <div style={{
             width: '64px',
@@ -166,18 +162,20 @@ export function FaqSimple() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.5rem auto'
+            margin: '0 auto 24px auto'
           }}>
             <IconQuestionMark size={32} color="var(--hh-primary-darkest)" />
           </div>
           
           <Title
-            order={3}
+            order={2}
             style={{
-              fontSize: '1.5rem',
+              fontSize: '48px',
               fontWeight: 600,
-              color: '#1c1c1c',
-              marginBottom: '0.75rem'
+              color: '#242424',
+              marginBottom: '12px',
+              lineHeight: 1.1,
+              fontFamily: '"Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif'
             }}
           >
             Still have questions?
@@ -185,29 +183,32 @@ export function FaqSimple() {
           
           <Text
             style={{
-              fontSize: '1rem',
-              color: '#666',
-              marginBottom: '2rem',
-              maxWidth: '400px',
-              margin: '0 auto 2rem auto',
-              lineHeight: 1.5
+              fontSize: '18px',
+              color: '#898989',
+              marginBottom: '32px',
+              maxWidth: '600px',
+              margin: '0 auto 32px auto',
+              lineHeight: 1.5,
+              fontFamily: '"Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif',
+              fontWeight: 400
             }}
           >
             Can't find what you're looking for? Our team is here to help with any questions about donating or our mission.
           </Text>
           
-          <Group justify="center" spacing="1rem">
+          <Group justify="center" spacing="16px">
             <Button
               size="lg"
               leftIcon={<IconMail size="1rem" />}
               style={{
                 backgroundColor: 'var(--hh-primary-darkest)',
-                color: 'white',
-                fontSize: '1rem',
-                fontWeight: 500,
+                color: '#ffffff',
+                fontSize: '18px',
+                fontWeight: 400,
                 padding: '12px 24px',
                 border: 'none',
-                borderRadius: '8px'
+                borderRadius: '12px',
+                fontFamily: '"Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif'
               }}
             >
               Contact Support
@@ -218,13 +219,14 @@ export function FaqSimple() {
               variant="outline"
               size="lg"
               style={{
-                borderColor: '#e1e2e3',
-                color: '#666',
-                fontSize: '1rem',
-                fontWeight: 500,
+                borderColor: 'transparent',
+                color: '#242424',
+                fontSize: '18px',
+                fontWeight: 400,
                 padding: '12px 24px',
-                borderRadius: '8px',
-                backgroundColor: 'white'
+                borderRadius: '12px',
+                backgroundColor: 'transparent',
+                fontFamily: '"Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif'
               }}
             >
               Learn More

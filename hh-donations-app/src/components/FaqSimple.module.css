@@ -1,23 +1,140 @@
+/* Cal.com FAQ Page Styling */
 .wrapper {
-  padding-top: calc(var(--mantine-spacing-xl) * 2);
-  padding-bottom: calc(var(--mantine-spacing-xl) * 2);
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  font-family: "Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
 .title {
-  margin-bottom: var(--mantine-spacing-md);
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
-  color: var(--mantine-color-black);
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #242424;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  font-family: "Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-  @media (max-width: $mantine-breakpoint-sm) {
-    font-size: rem(28px);
-  }
+.description {
+  font-size: 18px;
+  color: #898989;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-family: "Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+}
+
+.accordion {
+  max-width: 810px;
+  margin: 0 auto;
 }
 
 .item {
-  border-radius: var(--mantine-radius-md);
-  margin-bottom: var(--mantine-spacing-lg);
+  background-color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
 
-  border: rem(1px) solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.control {
+  background-color: #ffffff;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: #242424;
+  padding: 24px;
+  font-family: "Cal Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.control:hover {
+  background-color: #ffffff;
+}
+
+.panel {
+  background-color: #ffffff;
+  padding: 0 24px 24px 24px;
+}
+
+.content {
+  font-size: 18px;
+  color: #898989;
+  line-height: 1.5;
+  font-family: "Matter Regular", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+}
+
+.cta {
+  text-align: center;
+  margin-top: 48px;
+  padding: 48px 32px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  max-width: 810px;
+  margin: 48px auto 0 auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 810px) {
+  .container {
+    padding: 3rem 1rem;
+  }
+  
+  .title {
+    font-size: clamp(32px, 8vw, 48px);
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+  }
+  
+  .cta {
+    margin-top: 32px;
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 390px) {
+  .container {
+    padding: 2rem 0.5rem;
+  }
+  
+  .title {
+    font-size: 32px;
+  }
+  
+  .description {
+    font-size: 16px;
+  }
+  
+  .control {
+    font-size: 16px;
+    padding: 20px;
+  }
+  
+  .content {
+    font-size: 16px;
+  }
+  
+  .panel {
+    padding: 0 20px 20px 20px;
+  }
 }

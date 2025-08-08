@@ -39,7 +39,20 @@ const faqs = [
 ];
 
 const CustomChevron = ({ isOpen }) => {
-  return isOpen ? <IconMinus size={16} /> : <IconPlus size={16} />;
+  return (
+    <div style={{ 
+      width: '16px', 
+      height: '16px', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      position: 'relative',
+      transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+      transition: 'transform 0.3s ease'
+    }}>
+      <IconPlus size={16} />
+    </div>
+  );
 };
 
 export function FaqSimple() {
@@ -142,13 +155,27 @@ export function FaqSimple() {
             const isOpen = openItems.includes(itemKey);
             
             return (
-              <Accordion.Item key={index} value={itemKey}>
+              <Accordion.Item 
+                key={index} 
+                value={itemKey}
+                style={{
+                  backgroundColor: isOpen ? 'var(--hh-lightest)' : '#ffffff',
+                  transition: 'background-color 0.3s ease'
+                }}
+              >
                 <Accordion.Control 
                   chevron={<CustomChevron isOpen={isOpen} />}
+                  style={{
+                    backgroundColor: isOpen ? 'var(--hh-lightest)' : '#ffffff',
+                  }}
                 >
                   {faq.question}
                 </Accordion.Control>
-                <Accordion.Panel>
+                <Accordion.Panel
+                  style={{
+                    backgroundColor: isOpen ? 'var(--hh-lightest)' : '#ffffff',
+                  }}
+                >
                   <Text>{faq.answer}</Text>
                 </Accordion.Panel>
               </Accordion.Item>

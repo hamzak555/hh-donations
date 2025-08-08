@@ -1,13 +1,7 @@
 {
   "buildCommand": "cd hh-donations-app && CI=false npm run build",
   "outputDirectory": "hh-donations-app/build",
-  "installCommand": "cd hh-donations-app && npm install && cd ../hh-donations-backend && npm install",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api"
-    }
-  ],
+  "installCommand": "cd hh-donations-app && npm install",
   "env": {
     "NODE_ENV": "production",
     "JWT_SECRET": "production-jwt-secret-change-this",

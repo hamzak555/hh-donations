@@ -1,5 +1,5 @@
 import { Accordion, Container, Title, Text, Box, Group, Button } from '@mantine/core';
-import { IconPlus, IconMinus, IconMail, IconQuestionMark } from '@tabler/icons-react';
+import { IconPlus, IconMinus, IconMail, IconQuestionMark, IconChevronDown } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -41,16 +41,25 @@ const faqs = [
 const CustomChevron = ({ isOpen }) => {
   return (
     <div style={{ 
-      width: '16px', 
-      height: '16px', 
+      width: '20px', 
+      height: '20px', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
       position: 'relative',
-      transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-      transition: 'transform 0.3s ease'
+      backgroundColor: isOpen ? 'var(--hh-primary-darkest)' : '#f0f0f0',
+      borderRadius: '50%',
+      transform: isOpen ? 'rotate(180deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      border: isOpen ? '2px solid var(--hh-primary-darkest)' : '2px solid #e0e0e0'
     }}>
-      <IconPlus size={16} />
+      <IconChevronDown 
+        size={12} 
+        style={{
+          color: isOpen ? '#ffffff' : '#666666',
+          transition: 'color 0.3s ease'
+        }}
+      />
     </div>
   );
 };

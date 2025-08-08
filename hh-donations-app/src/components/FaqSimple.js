@@ -38,6 +38,10 @@ const faqs = [
   }
 ];
 
+const CustomChevron = ({ isOpen }) => {
+  return isOpen ? <IconMinus size={16} /> : <IconPlus size={16} />;
+};
+
 export function FaqSimple() {
   const [openItems, setOpenItems] = useState([]);
 
@@ -126,21 +130,30 @@ export function FaqSimple() {
               width: '24px',
               height: '24px',
               color: '#898989',
+              transition: 'all 0.2s ease',
               '&[data-rotate]': {
-                transform: 'rotate(45deg)',
+                transform: 'none',
               }
             }
           }}
-          chevron={<IconPlus size={16} />}
         >
-          {faqs.map((faq, index) => (
-            <Accordion.Item key={index} value={`faq-${index}`}>
-              <Accordion.Control>{faq.question}</Accordion.Control>
-              <Accordion.Panel>
-                <Text>{faq.answer}</Text>
-              </Accordion.Panel>
-            </Accordion.Item>
-          ))}
+          {faqs.map((faq, index) => {
+            const itemKey = `faq-${index}`;
+            const isOpen = openItems.includes(itemKey);
+            
+            return (
+              <Accordion.Item key={index} value={itemKey}>
+                <Accordion.Control 
+                  chevron={<CustomChevron isOpen={isOpen} />}
+                >
+                  {faq.question}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Text>{faq.answer}</Text>
+                </Accordion.Panel>
+              </Accordion.Item>
+            );
+          })}
         </Accordion>
 
         {/* Contact CTA */}

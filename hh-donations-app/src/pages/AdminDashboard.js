@@ -611,12 +611,12 @@ const AdminDashboard = () => {
                 const driver = drivers.find(d => d.id === pickup.driver_id);
                 return `
                   <tr>
-                    <td class="bin-number">${bin?.bin_number || 'N/A'}</td>
-                    <td>${bin?.name || 'Unknown Location'}</td>
-                    <td>${bin?.address || 'Address not available'}</td>
-                    <td>${driver?.name || 'Unassigned'}</td>
+                    <td class="bin-number">${bin && bin.bin_number ? bin.bin_number : 'N/A'}</td>
+                    <td>${bin && bin.name ? bin.name : 'Unknown Location'}</td>
+                    <td>${bin && bin.address ? bin.address : 'Address not available'}</td>
+                    <td>${driver && driver.name ? driver.name : 'Unassigned'}</td>
                     <td>${pickup.pickup_date}</td>
-                    <td>${pickup.load_type?.replace('_', ' ') || 'mixed'}</td>
+                    <td>${pickup.load_type && pickup.load_type.replace ? pickup.load_type.replace('_', ' ') : 'mixed'}</td>
                     <td>${pickup.load_weight || 'Not recorded'}</td>
                   </tr>
                 `;
@@ -962,6 +962,10 @@ const AdminDashboard = () => {
   }
 
   // Admin dashboard
+  // Calculate pickup counts outside JSX to avoid arrow function parsing issues
+  const scheduledPickupsCount = pickups.filter((p) => p.status !== 'completed').length;
+  const completedPickupsCount = pickups.filter((p) => p.status === 'completed').length;
+  
   return (
     <div style={{ backgroundColor: 'var(--hh-light)', minHeight: '100vh' }}>
       <Container size="lg" py="xl">
@@ -1394,7 +1398,7 @@ const AdminDashboard = () => {
                     backgroundColor: pickupSubTab === 'scheduled' ? 'var(--hh-primary-dark)' : undefined
                   }}
                 >
-                  Scheduled Pickups ({pickups.filter(p => p.status !== 'completed').length})
+                  Scheduled Pickups ({scheduledPickupsCount})
                 </Button>
                 <Button
                   variant={pickupSubTab === 'completed' ? 'filled' : 'outline'}
@@ -1403,7 +1407,7 @@ const AdminDashboard = () => {
                     backgroundColor: pickupSubTab === 'completed' ? 'var(--hh-primary-dark)' : undefined
                   }}
                 >
-                  Completed Pickups ({pickups.filter(p => p.status === 'completed').length})
+                  Completed Pickups ({completedPickupsCount})
                 </Button>
               </Group>
 
@@ -1411,7 +1415,7 @@ const AdminDashboard = () => {
                 <>
                   <Group position="apart" mb="md">
                     <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
-                      Scheduled Pickups ({pickups.filter(p => p.status !== 'completed').length})
+                      Scheduled Pickups ({scheduledPickupsCount})
                     </Title>
                     <Button
                       leftIcon={<IconPlus size="1rem" />}
@@ -1428,7 +1432,7 @@ const AdminDashboard = () => {
                 <>
                   <Group position="apart" mb="md">
                     <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
-                      Completed Pickups ({pickups.filter(p => p.status === 'completed').length})
+                      Completed Pickups ({completedPickupsCount})
                     </Title>
                     <Group>
                       <Group spacing="sm">
@@ -1489,7 +1493,7 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {(pickupSubTab === 'scheduled' ? 
-                      pickups.filter(p => p.status !== 'completed') :
+                      pickups.filter((p) => p.status !== 'completed') :
                       getFilteredCompletedPickups()
                     )
                     .slice((pickupPage - 1) * itemsPerPage, pickupPage * itemsPerPage)
@@ -1605,7 +1609,8 @@ const AdminDashboard = () => {
                       withEdges
                     />
                 </Center>
-              )}
+                );
+              })()}
               
               {/* Pagination Info */}
               {pickups.length > 0 && (

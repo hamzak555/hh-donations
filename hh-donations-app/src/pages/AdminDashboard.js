@@ -39,9 +39,13 @@ import {
   IconLock,
   IconMail,
   IconShieldCheck,
-  IconDots
+  IconDots,
+  IconPrinter,
+  IconFilter,
+  IconDownload
 } from '@tabler/icons-react';
 // Removed import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
+import { API_BASE } from '../utils/apiConfig';
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(null);
@@ -56,6 +60,8 @@ const AdminDashboard = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('bins');
   const [loginTab, setLoginTab] = useState('admin');
+  const [pickupSubTab, setPickupSubTab] = useState('scheduled'); // 'scheduled' or 'completed'
+  const [dateRange, setDateRange] = useState({ start: '', end: '' });
   
   // Search and filter states for bins
   const [binSearchQuery, setBinSearchQuery] = useState('');
@@ -104,7 +110,6 @@ const AdminDashboard = () => {
     status: 'active'
   });
 
-  const API_BASE = 'http://localhost:5001/api';
 
   // Filter bins based on search and filters
   const filteredBins = bins.filter(bin => {
@@ -537,6 +542,97 @@ const AdminDashboard = () => {
     }
   };
 
+  // Helper function to filter completed pickups by date range
+  const getFilteredCompletedPickups = () => {
+    let completedPickups = pickups.filter(p => p.status === 'completed');
+    
+    if (dateRange.start || dateRange.end) {
+      completedPickups = completedPickups.filter(pickup => {
+        const pickupDate = new Date(pickup.pickup_date);
+        const startDate = dateRange.start ? new Date(dateRange.start) : null;
+        const endDate = dateRange.end ? new Date(dateRange.end) : null;
+        
+        if (startDate && pickupDate < startDate) return false;
+        if (endDate && pickupDate > endDate) return false;
+        return true;
+      });
+    }
+    
+    return completedPickups.sort((a, b) => new Date(b.pickup_date) - new Date(a.pickup_date));
+  };
+
+  // Function to print completed pickups to PDF
+  const printToPDF = (data) => {
+    const printWindow = window.open('', '_blank');
+    const currentDate = new Date().toLocaleDateString();
+    const startDateStr = dateRange.start ? new Date(dateRange.start).toLocaleDateString() : 'All';
+    const endDateStr = dateRange.end ? new Date(dateRange.end).toLocaleDateString() : 'All';
+    
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Completed Pickups Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .date-range { text-align: center; color: #666; margin-bottom: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f8f9fa; font-weight: bold; }
+            .bin-number { font-family: monospace; font-weight: bold; }
+            @media print { .no-print { display: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>H&H Donations - Completed Pickups Report</h1>
+            <p>Generated on: ${currentDate}</p>
+          </div>
+          <div class="date-range">
+            <p>Date Range: ${startDateStr} to ${endDateStr}</p>
+            <p>Total Records: ${data.length}</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Bin ID</th>
+                <th>Location</th>
+                <th>Address</th>
+                <th>Driver</th>
+                <th>Pickup Date</th>
+                <th>Load Type</th>
+                <th>Weight (kg)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.map(pickup => {
+                const bin = bins.find(b => b.id === pickup.bin_id);
+                const driver = drivers.find(d => d.id === pickup.driver_id);
+                return `
+                  <tr>
+                    <td class="bin-number">${bin?.bin_number || 'N/A'}</td>
+                    <td>${bin?.name || 'Unknown Location'}</td>
+                    <td>${bin?.address || 'Address not available'}</td>
+                    <td>${driver?.name || 'Unassigned'}</td>
+                    <td>${pickup.pickup_date}</td>
+                    <td>${pickup.load_type?.replace('_', ' ') || 'mixed'}</td>
+                    <td>${pickup.load_weight || 'Not recorded'}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  };
+
   // Login form
   if (!isLoggedIn) {
     return (
@@ -914,7 +1010,7 @@ const AdminDashboard = () => {
             <Card shadow="sm" padding="xl" radius="md">
               <Group position="apart" mb="md">
                 <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
-                  Donation Bins ({filteredBins.length} of {bins.length})
+                  All Donation Bins ({filteredBins.length} of {bins.length})
                 </Title>
                 <Group>
                   <Button
@@ -1001,7 +1097,10 @@ const AdminDashboard = () => {
                   },
                   tbody: {
                     '& tr:hover': {
-                      backgroundColor: '#f8f9fa'
+                      backgroundColor: '#f8f9fa !important'
+                    },
+                    '& tr:hover .mantine-Badge-root': {
+                      opacity: '1 !important'
                     }
                   }
                 }}
@@ -1013,6 +1112,7 @@ const AdminDashboard = () => {
                     <th>Address</th>
                     <th style={{ width: '100px' }}>Type</th>
                     <th style={{ width: '100px' }}>Status</th>
+                    <th style={{ width: '120px' }}>Pickup Status</th>
                     <th style={{ width: '250px', textAlign: 'center' }}>Actions</th>
                   </tr>
                 </thead>
@@ -1077,6 +1177,42 @@ const AdminDashboard = () => {
                         >
                           {bin.status.charAt(0).toUpperCase() + bin.status.slice(1)}
                         </Badge>
+                      </td>
+                      <td>
+                        {(() => {
+                          const latestPickup = pickups
+                            .filter(pickup => pickup.bin_id === bin.id)
+                            .sort((a, b) => new Date(b.pickup_date) - new Date(a.pickup_date))[0];
+                          
+                          if (!latestPickup) {
+                            return (
+                              <Badge color="gray" variant="light" size="sm">
+                                No Pickups
+                              </Badge>
+                            );
+                          }
+                          
+                          const statusColors = {
+                            'scheduled': 'blue',
+                            'in_progress': 'yellow', 
+                            'completed': 'green',
+                            'cancelled': 'red'
+                          };
+                          
+                          return (
+                            <Badge 
+                              color={statusColors[latestPickup.status] || 'gray'} 
+                              variant="light" 
+                              size="sm"
+                            >
+                              {latestPickup.status === 'completed' ? 'Completed' :
+                               latestPickup.status === 'scheduled' ? 'Scheduled' :
+                               latestPickup.status === 'in_progress' ? 'In Progress' : 
+                               'Cancelled'}
+                            </Badge>
+                          );
+                        })()
+                      )}
                       </td>
                       <td>
                         <Group spacing="xs" position="center">
@@ -1249,32 +1385,113 @@ const AdminDashboard = () => {
           {/* Pickups Management */}
           {activeTab === 'pickups' && (
             <Card shadow="sm" padding="xl" radius="md">
-              <Group position="apart" mb="md">
-                <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
-                  Upcoming Pickups ({pickups.length})
-                </Title>
+              {/* Sub-tabs for pickups */}
+              <Group mb="md">
                 <Button
-                  leftIcon={<IconPlus size="1rem" />}
-                  onClick={handleCreatePickup}
-                  style={{ backgroundColor: 'var(--hh-primary-dark)' }}
+                  variant={pickupSubTab === 'scheduled' ? 'filled' : 'outline'}
+                  onClick={() => setPickupSubTab('scheduled')}
+                  style={{ 
+                    backgroundColor: pickupSubTab === 'scheduled' ? 'var(--hh-primary-dark)' : undefined
+                  }}
                 >
-                  Schedule New Pickup
+                  Scheduled Pickups ({pickups.filter(p => p.status !== 'completed').length})
+                </Button>
+                <Button
+                  variant={pickupSubTab === 'completed' ? 'filled' : 'outline'}
+                  onClick={() => setPickupSubTab('completed')}
+                  style={{ 
+                    backgroundColor: pickupSubTab === 'completed' ? 'var(--hh-primary-dark)' : undefined
+                  }}
+                >
+                  Completed Pickups ({pickups.filter(p => p.status === 'completed').length})
                 </Button>
               </Group>
+
+              {pickupSubTab === 'scheduled' && (
+                <>
+                  <Group position="apart" mb="md">
+                    <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
+                      Scheduled Pickups ({pickups.filter(p => p.status !== 'completed').length})
+                    </Title>
+                    <Button
+                      leftIcon={<IconPlus size="1rem" />}
+                      onClick={handleCreatePickup}
+                      style={{ backgroundColor: 'var(--hh-primary-dark)' }}
+                    >
+                      Schedule New Pickup
+                    </Button>
+                  </Group>
+                </>)
+              )}
+
+              {pickupSubTab === 'completed' && (
+                <>
+                  <Group position="apart" mb="md">
+                    <Title order={3} style={{ color: 'var(--hh-primary-dark)' }}>
+                      Completed Pickups ({pickups.filter(p => p.status === 'completed').length})
+                    </Title>
+                    <Group>
+                      <Group spacing="sm">
+                        <TextInput
+                          placeholder="Start date"
+                          type="date"
+                          value={dateRange.start}
+                          onChange={(e) => setDateRange({...dateRange, start: e.target.value})}
+                          icon={<IconCalendar size="1rem" />}
+                          style={{ width: '160px' }}
+                        />
+                        <TextInput
+                          placeholder="End date"
+                          type="date"
+                          value={dateRange.end}
+                          onChange={(e) => setDateRange({...dateRange, end: e.target.value})}
+                          icon={<IconCalendar size="1rem" />}
+                          style={{ width: '160px' }}
+                        />
+                        <Button
+                          variant="outline"
+                          leftIcon={<IconFilter size="1rem" />}
+                          onClick={() => setDateRange({ start: '', end: '' })}
+                          disabled={!dateRange.start && !dateRange.end}
+                        >
+                          Clear Filter
+                        </Button>
+                      </Group>
+                      <Button
+                        leftIcon={<IconPrinter size="1rem" />}
+                        variant="outline"
+                        color="blue"
+                        onClick={() => {
+                          const filteredData = getFilteredCompletedPickups();
+                          printToPDF(filteredData);
+                        }}
+                      >
+                        Print PDF
+                      </Button>
+                    </Group>
+                  </Group>
+                </>)
+              )}
 
               <Table striped highlightOnHover>
                 <thead>
                   <tr>
-                    <th>Bin</th>
+                    <th>Bin ID</th>
+                    <th>Location</th>
+                    <th>Address</th>
                     <th>Driver</th>
                     <th>Date & Time</th>
                     <th>Load Type</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    {pickupSubTab === 'scheduled' && <th>Actions</th>}
+                    {pickupSubTab === 'completed' && <th>Weight (kg)</th>}
                   </tr>
                 </thead>
                 <tbody>
-                  {pickups
+                  {(pickupSubTab === 'scheduled' ? 
+                      pickups.filter(p => p.status !== 'completed') :
+                      getFilteredCompletedPickups()
+                    )
                     .slice((pickupPage - 1) * itemsPerPage, pickupPage * itemsPerPage)
                     .map((pickup) => {
                     const bin = bins.find(b => b.id === pickup.bin_id);
@@ -1282,10 +1499,30 @@ const AdminDashboard = () => {
                     return (
                       <tr key={pickup.id}>
                         <td>
+                          <Badge 
+                            color="blue" 
+                            variant="light" 
+                            size="md"
+                            style={{ 
+                              fontFamily: 'monospace',
+                              fontWeight: 600
+                            }}
+                          >
+                            {bin?.bin_number || 'N/A'}
+                          </Badge>
+                        </td>
+                        <td>
                           <Group spacing="xs">
                             <IconMapPin size="1rem" color="var(--hh-primary)" />
-                            {bin?.name || `Bin ID: ${pickup.bin_id}`}
+                            <Text weight={500} size="sm">
+                              {bin?.name || `Bin ID: ${pickup.bin_id}`}
+                            </Text>
                           </Group>
+                        </td>
+                        <td>
+                          <Text size="sm" color="dimmed" lineClamp={2}>
+                            {bin?.address || 'Address not available'}
+                          </Text>
                         </td>
                         <td>{driver?.name || 'Unassigned'}</td>
                         <td>
@@ -1316,24 +1553,36 @@ const AdminDashboard = () => {
                             {pickup.status}
                           </Badge>
                         </td>
-                        <td>
-                          <Group spacing="xs">
-                            <ActionIcon
-                              color="blue"
-                              variant="light"
-                              onClick={() => handleEditPickup(pickup)}
-                            >
-                              <IconEdit size="1rem" />
-                            </ActionIcon>
-                            <ActionIcon
-                              color="red"
-                              variant="light"
-                              onClick={() => handleDeletePickup(pickup.id)}
-                            >
-                              <IconTrash size="1rem" />
-                            </ActionIcon>
-                          </Group>
-                        </td>
+                        {pickupSubTab === 'scheduled' && (
+                          <td>
+                            <Group spacing="xs">
+                              <ActionIcon
+                                color="blue"
+                                variant="light"
+                                onClick={() => handleEditPickup(pickup)}
+                              >
+                                <IconEdit size="1rem" />
+                              </ActionIcon>
+                              <ActionIcon
+                                color="red"
+                                variant="light"
+                                onClick={() => handleDeletePickup(pickup.id)}
+                              >
+                                <IconTrash size="1rem" />
+                              </ActionIcon>
+                            </Group>
+                          </td>
+                        )}
+                        {pickupSubTab === 'completed' && (
+                          <td>
+                            <Group spacing="xs">
+                              <IconWeight size="1rem" color="var(--hh-primary)" />
+                              <Text size="sm" weight={500}>
+                                {pickup.load_weight ? `${pickup.load_weight} kg` : 'Not recorded'}
+                              </Text>
+                            </Group>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
@@ -1341,12 +1590,16 @@ const AdminDashboard = () => {
               </Table>
               
               {/* Pagination for Pickups */}
-              {pickups.length > itemsPerPage && (
-                <Center mt="md">
-                  <Pagination
-                    page={pickupPage}
-                    onChange={setPickupPage}
-                    total={Math.ceil(pickups.length / itemsPerPage)}
+              {(() => {
+                const currentPickups = pickupSubTab === 'scheduled' ? 
+                  pickups.filter(p => p.status !== 'completed') :
+                  getFilteredCompletedPickups();
+                return currentPickups.length > itemsPerPage && (
+                  <Center mt="md">
+                    <Pagination
+                      page={pickupPage}
+                      onChange={setPickupPage}
+                      total={Math.ceil(currentPickups.length / itemsPerPage)}
                     size="md"
                     radius="md"
                     withEdges

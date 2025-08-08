@@ -28,6 +28,7 @@ import {
 } from '@tabler/icons-react';
 import ReliableGoogleMap from '../components/ReliableGoogleMap';
 import SimpleAutocomplete from '../components/SimpleAutocomplete';
+import { API_BASE } from '../utils/apiConfig';
 
 const FindBin = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -42,8 +43,7 @@ const FindBin = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // API endpoint
-  const API_BASE = 'http://localhost:5001/api';
+  // API endpoint is imported from apiConfig
   const [allBins, setAllBins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

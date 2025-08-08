@@ -60,4 +60,45 @@ PROJECT DEVELOPMENT RULES
    
    PREVENTION: Always use PORT=3000 when starting the server and ensure no zombie processes are running.
 
+8. CORS CONFIGURATION - "Error connecting to server" FIX
+   When frontend shows "Error connecting to server" despite backend running:
+   
+   SYMPTOMS:
+   - Frontend loads but shows "Error connecting to server" on login/API calls
+   - Backend server is running and accessible via curl
+   - Network requests fail in browser due to CORS policy
+   
+   STEP 1: Verify both servers are running
+   - Frontend: ps aux | grep 'react-scripts' | grep -v grep
+   - Backend: ps aux | grep 'node.*server.js' | grep -v grep
+   - Check ports: lsof -i :3000 && lsof -i :5001
+   
+   STEP 2: Test backend API directly
+   - Run: curl -X POST http://localhost:5001/api/auth/login -H "Content-Type: application/json" -d '{"email":"admin@hh-donations.com","password":"admin123"}'
+   - If this works, the issue is likely CORS
+   
+   STEP 3: Check CORS configuration
+   - Test with origin header: curl -X POST http://localhost:5001/api/auth/login -H "Origin: http://localhost:3000" -H "Content-Type: application/json" -d '{"email":"admin@hh-donations.com","password":"admin123"}' -i
+   - Look for: Access-Control-Allow-Origin in response headers
+   - Should show: Access-Control-Allow-Origin: http://localhost:3000
+   
+   STEP 4: Fix CORS if misconfigured
+   - Check backend .env file: /Users/hamzakhalid/Desktop/HH_Donations/hh-donations-backend/.env
+   - Verify: FRONTEND_URL=http://localhost:3000 (NOT 3001)
+   - If wrong, change to: FRONTEND_URL=http://localhost:3000
+   
+   STEP 5: Restart backend server
+   - Kill current backend: kill -9 [PID from step 1]
+   - Restart: cd /Users/hamzakhalid/Desktop/HH_Donations/hh-donations-backend && nohup node server.js > server.log 2>&1 &
+   - Wait 3 seconds for server to start
+   
+   STEP 6: Test and refresh
+   - Test CORS again with curl command from step 3
+   - Refresh browser: osascript -e 'tell application "System Events" to keystroke "r" using command down'
+   - Try logging in with: admin@hh-donations.com / admin123
+   
+   ROOT CAUSE: The backend CORS policy was configured for localhost:3001 but frontend runs on localhost:3000, causing browser to block requests.
+   
+   PREVENTION: Always ensure FRONTEND_URL in backend .env matches the actual frontend port (3000).
+
 [This file will be updated with additional rules as the project progresses]

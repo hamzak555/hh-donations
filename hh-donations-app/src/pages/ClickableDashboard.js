@@ -48,6 +48,7 @@ import {
   IconCircleCheck,
   IconArrowBackUp,
 } from '@tabler/icons-react';
+import { API_BASE } from '../utils/apiConfig';
 
 const ClickableDashboard = () => {
   const [bins, setBins] = useState([]);
@@ -115,7 +116,7 @@ const ClickableDashboard = () => {
     status: 'scheduled'
   });
 
-  const API_BASE = 'http://localhost:5001/api';
+  // API endpoint is imported from apiConfig
   const navigate = useNavigate();
 
   // Check if user is logged in on component mount
